@@ -27,15 +27,35 @@
         Route::view('/profile', 'pages.profile')->name('profile');
         Route::view('/about', 'pages.about')->name('about');
         Route::view('/contact', 'pages.contact')->name('contact');
-        Route::view('/conditional', 'pages.conditional')->name('conditional');
-        Route::view('/student-list', 'pages.student-list')->name('student.list');
+        Route::get('/conditional/{grade?}', function ($grade = null) {
+            $equivalent = null;
+        
+            if ($grade !== null && is_numeric($grade)) {
+                $grade = (int) $grade;
+        
+                if ($grade >= 97) $equivalent = "1.0";
+                elseif ($grade >= 94) $equivalent = "1.25";
+                elseif ($grade >= 91) $equivalent = "1.5";
+                elseif ($grade >= 88) $equivalent = "1.75";
+                elseif ($grade >= 85) $equivalent = "2.0";
+                elseif ($grade >= 82) $equivalent = "2.25";
+                elseif ($grade >= 79) $equivalent = "2.5";
+                elseif ($grade >= 76) $equivalent = "2.75";
+                elseif ($grade >= 75) $equivalent = "3.0";
+                else $equivalent = "5.0";
+            }
+        
+            return view('pages.conditional', compact('grade', 'equivalent'));
+        })->name('conditional');
+                Route::view('/student-list', 'pages.student-list')->name('student.list');
+                
         Route::view('/student-info', 'pages.student-info')->name('student.info');
     });
 
     //contact
     Route::post('/contact/send', [ContactController::class, 'send'])->name('contact.send');
 
-
+//
 
     //student
 
